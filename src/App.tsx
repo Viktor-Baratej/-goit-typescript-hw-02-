@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchImages } from './services/api';
+import ReactModal from 'react-modal';
 import SearchBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Loader from './components/Loader/Loader';
@@ -8,6 +9,8 @@ import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import ImageModal from './components/ImageModal/ImageModal';
 import toast, { Toaster } from 'react-hot-toast';
 
+ReactModal.setAppElement('#root'); // Встановлення лише тут
+
 const App = () => {
   const [query, setQuery] = useState('');
   const [images, setImages] = useState([]);
@@ -15,7 +18,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageID, setSelectedImageID] = useState(null);
   const [hasMore, setHasMore] = useState(true);
 
@@ -59,19 +61,17 @@ const App = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  const openModal = image => {
-    setSelectedImage(image);
+  const openModal = id => {
+    if (selectedImageID === id) return;
+    setSelectedImageID(id);
     setShowModal(true);
   };
 
   const closeModal = () => {
-    setSelectedImage(null);
+    setSelectedImageID(null);
     setShowModal(false);
   };
 
-  const defineImageModalID = id => {
-    setSelectedImageID(id);
-  };
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
@@ -79,23 +79,18 @@ const App = () => {
 
       {error && <ErrorMessage message={error} />}
       {images.length > 0 && (
-        <ImageGallery
-          images={images}
-          defineImageModalID={defineImageModalID}
-          openModal={openModal}
-        />
+        <ImageGallery images={images} openModal={openModal} />
       )}
       {isLoading && <Loader />}
       {hasMore && !isLoading && images.length > 0 && (
         <LoadMoreBtn onClick={handleLoadMore} />
       )}
-
-      {showModal && selectedImage && (
+      {showModal && selectedImageID && (
         <ImageModal
-          isOpen={showModal}
-          onClose={closeModal}
+          openModal={openModal}
+          onRequestClose={closeModal}
           images={images}
-          image={selectedImage}
+          imageModalID={selectedImageID}
         />
       )}
     </div>

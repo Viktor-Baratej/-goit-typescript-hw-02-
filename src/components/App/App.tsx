@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
-import { fetchImages } from './services/api';
+import { fetchImages, Image } from '../../services/api';
 import ReactModal from 'react-modal';
-import SearchBar from './components/SearchBar/SearchBar';
-import ImageGallery from './components/ImageGallery/ImageGallery';
-import Loader from './components/Loader/Loader';
-import ErrorMessage from './components/ErrorMessage/ErrorMessage';
-import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
-import ImageModal from './components/ImageModal/ImageModal';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import ImageGallery from '../../components/ImageGallery/ImageGallery';
+import Loader from '../../components/Loader/Loader';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import LoadMoreBtn from '../../components/LoadMoreBtn/LoadMoreBtn';
+import ImageModal from '../../components/ImageModal/ImageModal';
 import toast, { Toaster } from 'react-hot-toast';
 
-ReactModal.setAppElement('#root'); // Встановлення лише тут
+ReactModal.setAppElement('#root');
 
-const App = () => {
-  const [query, setQuery] = useState('');
-  const [images, setImages] = useState([]);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedImageID, setSelectedImageID] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
+const App: React.FC = () => {
+  const [query, setQuery] = useState<string>('');
+  const [images, setImages] = useState<Image[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedImageID, setSelectedImageID] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
   useEffect(() => {
     if (!query) return;
@@ -48,7 +48,7 @@ const App = () => {
     fetchGallery();
   }, [query, page]);
 
-  const handleSearch = searchQuery => {
+  const handleSearch = (searchQuery: string) => {
     if (query === searchQuery) return;
 
     setQuery(searchQuery);
@@ -61,8 +61,7 @@ const App = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  const openModal = id => {
-    if (selectedImageID === id) return;
+  const openModal = (id: string) => {
     setSelectedImageID(id);
     setShowModal(true);
   };
@@ -87,7 +86,7 @@ const App = () => {
       )}
       {showModal && selectedImageID && (
         <ImageModal
-          openModal={openModal}
+          isOpen={showModal}
           onRequestClose={closeModal}
           images={images}
           imageModalID={selectedImageID}

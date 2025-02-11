@@ -1,8 +1,14 @@
 import styles from './ImageCard.module.css';
+import { Image } from '../../services/api';
 
-const ImageCard = ({ image, openModal }) => {
+interface ImageCardProps {
+  image: Image;
+  openModal: (id: string) => void;
+}
+
+const ImageCard: React.FC<ImageCardProps> = ({ image, openModal }) => {
   const handleClick = () => {
-    openModal(image.id); // ✅ Викликаємо openModal з image.id
+    openModal(image.id);
   };
 
   return (
@@ -10,7 +16,7 @@ const ImageCard = ({ image, openModal }) => {
       <img
         className={styles.image_card_img}
         src={image.urls.small}
-        alt={image.description || 'Image'}
+        alt={image.alt_description || 'Image'}
         onClick={handleClick}
       />
     </div>

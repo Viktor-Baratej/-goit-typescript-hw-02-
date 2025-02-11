@@ -1,14 +1,27 @@
 import ReactModal from 'react-modal';
 import styles from './ImageModal.module.css';
+import { Image } from '../../services/api';
 
-const ImageModal = ({ imageModalID, images, onRequestClose }) => {
+interface ImageModalProps {
+  imageModalID: string | null;
+  images: Image[];
+  isOpen: boolean;
+  onRequestClose: () => void;
+}
+
+const ImageModal: React.FC<ImageModalProps> = ({
+  imageModalID,
+  images,
+  isOpen,
+  onRequestClose,
+}) => {
   const showImage = images.find(image => image.id === imageModalID);
 
-  if (!showImage) return null; // 🔥 Запобігає відкриттю пустого модального вікна
+  if (!showImage) return null;
 
   return (
     <ReactModal
-      isOpen={!!showImage}
+      isOpen={isOpen}
       onRequestClose={onRequestClose}
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
@@ -21,13 +34,13 @@ const ImageModal = ({ imageModalID, images, onRequestClose }) => {
         <img
           className={styles.image_modal_img}
           src={showImage.urls.regular}
-          alt={showImage.description || 'Image'}
+          alt={showImage.alt_description || 'Image'}
         />
         <ul className={styles.image_modal_list}>
           <li>
             Author:
             <span className={styles.image_modal_info}>
-              {showImage.user.first_name} {showImage.user.last_name}
+              {showImage.user.name}
             </span>
           </li>
           <li>

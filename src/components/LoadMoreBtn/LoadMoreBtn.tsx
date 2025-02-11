@@ -1,11 +1,27 @@
 import styles from './LoadMoreBtn.module.css';
 
-const LoadMoreBtn = ({ onClick }) => (
-  <div className={styles.button_container}>
-    <button className={styles.button} onClick={onClick}>
-      Load more
-    </button>
-  </div>
-);
+interface LoadMoreBtnProps {
+  onClick: () => void;
+}
+
+const LoadMoreBtn: React.FC<LoadMoreBtnProps> = ({ onClick }) => {
+  const handleClick = () => {
+    onClick();
+    setTimeout(() => {
+      window.scrollBy({
+        top: window.innerHeight / 2,
+        behavior: 'smooth',
+      });
+    }, 200);
+  };
+
+  return (
+    <div className={styles.button_container}>
+      <button className={styles.button} onClick={handleClick}>
+        Load more
+      </button>
+    </div>
+  );
+};
 
 export default LoadMoreBtn;

@@ -14,6 +14,7 @@ export interface Image {
     name: string;
     portfolio_url: string | null;
   };
+  likes: number;
 }
 
 export interface FetchImagesResponse {

@@ -45,7 +45,9 @@ const ImageModal: React.FC<ImageModalProps> = ({
           </li>
           <li>
             Likes:
-            <span className={styles.image_modal_info}>{showImage.likes}</span>
+            <span className={styles.image_modal_info}>
+              {showImage.likes ?? 'N/A'}
+            </span>
           </li>
           <li>
             Description:

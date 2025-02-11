@@ -26,8 +26,15 @@ const ImageModal: React.FC<ImageModalProps> = ({
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
       style={{
-        overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
-        content: { maxWidth: '600px', margin: 'auto', borderRadius: '10px' },
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        content: {
+          width: '800px',
+          margin: 'auto',
+          padding: '30px',
+          borderRadius: '10px',
+        },
       }}
     >
       <div className={styles.image_modal}>
@@ -37,20 +44,20 @@ const ImageModal: React.FC<ImageModalProps> = ({
           alt={showImage.alt_description || 'Image'}
         />
         <ul className={styles.image_modal_list}>
-          <li>
-            Author:
+          <li className={styles.image_modal_item}>
+            <strong>Author:</strong>&nbsp;&nbsp;
             <span className={styles.image_modal_info}>
               {showImage.user.name}
             </span>
           </li>
-          <li>
-            Likes:
+          <li className={styles.image_modal_item}>
+            <strong>Likes:</strong>&nbsp;&nbsp;
             <span className={styles.image_modal_info}>
               {showImage.likes ?? 'N/A'}
             </span>
           </li>
-          <li>
-            Description:
+          <li className={styles.image_modal_item}>
+            <strong>Description:</strong>&nbsp;&nbsp;
             <span className={styles.image_modal_info}>
               {showImage.alt_description || 'No description'}
             </span>
